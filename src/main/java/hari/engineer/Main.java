@@ -56,10 +56,52 @@ public class Main {
         return result;
     }
 
+    public static boolean sumPossible(int amount, int[] numbers) {
+        if (amount == 0) {
+            return true;
+        }
+        if (amount < 0) {
+            return false;
+        }
+        for (int number : numbers) {
+            int subAmount = amount - number;
+            if (sumPossible(subAmount, numbers)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean sumPossibleMemo(int amount, int[] numbers) {
+        return sumPossibleMemo(amount, numbers, new HashMap<>());
+    }
+
+    public static boolean sumPossibleMemo(int amount, int[] numbers, HashMap<Integer, Boolean> memo) {
+        if (memo.containsKey(amount)) {
+            return memo.get(amount);
+        }
+        if (amount == 0) {
+            return true;
+        }
+        if (amount < 0) {
+            return false;
+        }
+        for (int number : numbers) {
+            int subAmount = amount - number;
+            if (sumPossibleMemo(subAmount, numbers, memo)) {
+                memo.put(amount, true);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public static void main(String[] args) {
 //        fibonacci(10);
 //        System.out.println(fibonacci_recursion(10));
 //        System.out.println(fibonacci_memo(10));
-        System.out.println(tribonacci(8));
+//        System.out.println(tribonacci(8));
+        System.out.println(sumPossible(5, new int[] {1,2,3}));
     }
 }
