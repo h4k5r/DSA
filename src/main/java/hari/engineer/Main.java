@@ -36,14 +36,16 @@ public class Main {
         memo.put(n, result);
         return result;
     }
+
     public static int tribonacci(int n) {
-        return tribonacci(n , new HashMap<>());
+        return tribonacci(n, new HashMap<>());
     }
 
     public static int tribonacci(int n, HashMap<Integer, Integer> memo) {
         if (n == 0 || n == 1) {
             return 0;
-        } if (n == 2) {
+        }
+        if (n == 2) {
             return 1;
         }
 
@@ -96,12 +98,74 @@ public class Main {
         return false;
     }
 
+    public static int minChange(int amount, int[] coins) {
+        if (amount == 0) {
+            return 0;
+        }
+
+        if (amount < 0) {
+            return -1;
+        }
+
+        int minCoins = -1;
+
+        for (int coin : coins) {
+            int subAmount = amount - coin;
+            int subCoins = minChange(subAmount, coins);
+            if (subCoins != -1) {
+                int numCoins = subCoins + 1;
+                if (numCoins < minCoins || minCoins == -1) {
+                    minCoins = numCoins;
+                }
+            }
+        }
+        return minCoins;
+    }
+
+    public static int minChangeMemo(int amount, int[] coins) {
+        return minChangeMemo(amount, coins, new HashMap<>());
+    }
+
+    public static int minChangeMemo(int amount, int[] coins, HashMap<Integer, Integer> memo) {
+        if (memo.containsKey(amount)) {
+            return memo.get(amount);
+        }
+        if (amount == 0) {
+            return 0;
+        }
+
+        if (amount < 0) {
+            return -1;
+        }
+
+        int minCoins = -1;
+
+        for (int coin : coins) {
+            int subAmount = amount - coin;
+            int subCoins = minChangeMemo(subAmount, coins, memo);
+            if (subCoins != -1) {
+                int numCoins = subCoins + 1;
+                if (numCoins < minCoins || minCoins == -1) {
+                    minCoins = numCoins;
+                    memo.put(amount, minCoins);
+                }
+            }
+        }
+        return minCoins;
+    }
+
 
     public static void main(String[] args) {
 //        fibonacci(10);
 //        System.out.println(fibonacci_recursion(10));
 //        System.out.println(fibonacci_memo(10));
+
 //        System.out.println(tribonacci(8));
-        System.out.println(sumPossible(5, new int[] {1,2,3}));
+
+//        System.out.println(sumPossible(5, new int[] {1,2,3}));
+//        System.out.println(sumPossibleMemo(5, new int[] {1,2,3}));
+
+//        System.out.println(minChange(4, new int[]{1,2,3}));
+        System.out.println(minChangeMemo(4, new int[]{1, 2, 3}));
     }
 }
