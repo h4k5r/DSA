@@ -127,15 +127,16 @@ public class Main {
     }
 
     public static int minChangeMemo(int amount, int[] coins, HashMap<Integer, Integer> memo) {
-        if (memo.containsKey(amount)) {
-            return memo.get(amount);
-        }
         if (amount == 0) {
             return 0;
         }
 
         if (amount < 0) {
             return -1;
+        }
+
+        if (memo.containsKey(amount)) {
+            return memo.get(amount);
         }
 
         int minCoins = -1;
@@ -151,6 +152,7 @@ public class Main {
                 }
             }
         }
+
         return minCoins;
     }
 
