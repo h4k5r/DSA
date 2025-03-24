@@ -1,4 +1,4 @@
-package hari.engineer;
+package hari.engineer.dynamic.programming;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -195,18 +195,61 @@ public class Main {
         if (r == grid.size() - 1 && c == grid.get(r).size() - 1) {
             return 1;
         }
+        List<Integer> key = Arrays.asList(r, c);
 
-        if (memo.containsKey(Arrays.asList(r,c))) {
-            return memo.get(Arrays.asList(r,c));
+        if (memo.containsKey(key)) {
+            return memo.get(key);
         }
 
         int result = countPaths_memo(r + 1, c, grid, memo) + countPaths_memo(r, c + 1, grid, memo);
-        memo.put(Arrays.asList(r, c), result);
+        memo.put(key, result);
         return result;
     }
 
+    public static int maxPathSum(List<List<Integer>> grid) {
+        return maxPathSum(0, 0, grid);
+    }
 
+    public static int maxPathSum(int r, int c, List<List<Integer>> grid) {
+        if (r >= grid.size() || c >= grid.get(r).size()) {
+            return Integer.MIN_VALUE;
+        }
 
+        if (r == grid.size() - 1 && c == grid.get(r).size() - 1) {
+            return grid.get(r).get(c);
+        }
+
+        return grid.get(r).get(c) +
+                Math.max(maxPathSum(r + 1, c, grid),
+                        maxPathSum(r, c + 1, grid));
+    }
+
+    public static int maxPathSum_memo(List<List<Integer>> grid) {
+        return maxPathSum_memo(0, 0, grid, new HashMap<>());
+    }
+
+    public static int maxPathSum_memo(int r, int c, List<List<Integer>> grid, HashMap<List<Integer>, Integer> memo) {
+        if (r >= grid.size() || c >= grid.get(r).size()) {
+            return Integer.MIN_VALUE;
+        }
+
+        if (r == grid.size() - 1 && c == grid.get(r).size() - 1) {
+            return grid.get(r).get(c);
+        }
+
+        List<Integer> key = Arrays.asList(r,c);
+
+        if (memo.containsKey(key)) {
+            return memo.get(key);
+        }
+
+        int result = grid.get(r).get(c) +
+                Math.max(maxPathSum_memo(r + 1, c, grid, memo),
+                        maxPathSum_memo(r, c + 1, grid, memo));
+
+        memo.put(key,result);
+        return result;
+    }
 
     public static void main(String[] args) {
 //        fibonacci(10);
@@ -222,10 +265,17 @@ public class Main {
 //        System.out.println(minChangeMemo(4, new int[]{1, 2, 3}));
 
 //        List<List<Integer>> grid = new ArrayList<>();
-//        grid.add(Arrays.asList(new Integer[]{0, 0, 1}));
-//        grid.add(Arrays.asList(new Integer[]{0, 0, 0}));
-//        grid.add(Arrays.asList(new Integer[]{0, 0, 0}));
+//        grid.add(Arrays.asList(0, 0, 1));
+//        grid.add(Arrays.asList(0, 0, 0));
+//        grid.add(Arrays.asList(0, 0, 0));
 //        System.out.println(countPaths(grid));
 //        System.out.println(countPaths_memo(grid));
+
+//        List<List<Integer>> grid = new ArrayList<>();
+//        grid.add(Arrays.asList(1, 3, 12));
+//        grid.add(Arrays.asList(5, 1, 1));
+//        grid.add(Arrays.asList(3, 6, 1));
+//        System.out.println(maxPathSum(grid));
+//        System.out.println(maxPathSum_memo(grid));
     }
 }

@@ -1,4 +1,4 @@
-package hari.engineer;
+package hari.engineer.dynamic.programming;
 
 import java.util.HashMap;
 
