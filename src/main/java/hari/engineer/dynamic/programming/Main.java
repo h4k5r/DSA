@@ -1,8 +1,6 @@
 package hari.engineer.dynamic.programming;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Main {
     public static void fibonacci(int n) {
@@ -236,7 +234,7 @@ public class Main {
             return grid.get(r).get(c);
         }
 
-        List<Integer> key = Arrays.asList(r,c);
+        List<Integer> key = Arrays.asList(r, c);
 
         if (memo.containsKey(key)) {
             return memo.get(key);
@@ -246,23 +244,26 @@ public class Main {
                 Math.max(maxPathSum_memo(r + 1, c, grid, memo),
                         maxPathSum_memo(r, c + 1, grid, memo));
 
-        memo.put(key,result);
+        memo.put(key, result);
         return result;
     }
-    public static int maxNonAdjacentSum(List<Integer > nums) {
-        return maxNonAdjacentSum( nums, 0);
+
+    public static int maxNonAdjacentSum(List<Integer> nums) {
+        return maxNonAdjacentSum(nums, 0);
     }
-    public static int maxNonAdjacentSum( List<Integer> nums, int start) {
+
+    public static int maxNonAdjacentSum(List<Integer> nums, int start) {
         if (start >= nums.size()) {
             return 0;
         }
-        return Math.max(maxNonAdjacentSum(nums,start +1), nums.get(start) + maxNonAdjacentSum(nums,start+2));
+        return Math.max(maxNonAdjacentSum(nums, start + 1), nums.get(start) + maxNonAdjacentSum(nums, start + 2));
     }
 
-    public static int maxNonAdjacentSum_memo(List<Integer > nums) {
-        return maxNonAdjacentSum_memo( nums, 0, new HashMap<>());
+    public static int maxNonAdjacentSum_memo(List<Integer> nums) {
+        return maxNonAdjacentSum_memo(nums, 0, new HashMap<>());
     }
-    public static int maxNonAdjacentSum_memo( List<Integer> nums, int start, HashMap<Integer,Integer> memo) {
+
+    public static int maxNonAdjacentSum_memo(List<Integer> nums, int start, HashMap<Integer, Integer> memo) {
         if (start >= nums.size()) {
             return 0;
         }
@@ -271,9 +272,42 @@ public class Main {
             return memo.get(start);
         }
 
-        int result = Math.max(maxNonAdjacentSum_memo(nums,start +1,memo), nums.get(start) + maxNonAdjacentSum_memo(nums,start+2,memo));
-        memo.put(start,result);
+        int result = Math.max(maxNonAdjacentSum_memo(nums, start + 1, memo), nums.get(start) + maxNonAdjacentSum_memo(nums, start + 2, memo));
+        memo.put(start, result);
         return result;
+    }
+
+    public static int compress(char[] chars) {
+        Stack<Map.Entry<Character, Integer>> characters = new Stack<>();
+        for (char c : chars) {
+            if (!characters.isEmpty()) {
+                Map.Entry<Character, Integer> entry = characters.peek();
+                if (entry.getKey().equals(c)) {
+                    entry = characters.pop();
+                    characters.push(Map.entry(c, entry.getValue() + 1));
+                } else {
+                    characters.push(Map.entry(c, 1));
+                }
+            } else {
+                characters.push(Map.entry(c, 1));
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<Character, Integer> entry : characters) {
+            if (entry.getValue() == 1) {
+                sb.append(entry.getKey());
+            } else {
+                sb.append(entry.getKey());
+                sb.append(entry.getValue());
+            }
+        }
+
+        char[] stringArr = sb.toString().toCharArray();
+        for (int i = 0; i < stringArr.length; i++) {
+            chars[i] = stringArr[i];
+        }
+
+        return sb.length();
     }
 
     public static void main(String[] args) {
@@ -303,6 +337,9 @@ public class Main {
 //        System.out.println(maxPathSum(grid));
 //        System.out.println(maxPathSum_memo(grid));
 
-        System.out.println(maxNonAdjacentSum(Arrays.asList(2,4,5,12,7)));
+//        System.out.println(maxNonAdjacentSum(Arrays.asList(2,4,5,12,7)));
+
+//        compress(new char[]{'a','a','b','b','b','c','c','a','a'});
+        compress(new char[]{'a'});
     }
 }
