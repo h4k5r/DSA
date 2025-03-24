@@ -1,6 +1,5 @@
 package hari.engineer.dynamic.programming;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -250,6 +249,32 @@ public class Main {
         memo.put(key,result);
         return result;
     }
+    public static int maxNonAdjacentSum(List<Integer > nums) {
+        return maxNonAdjacentSum( nums, 0);
+    }
+    public static int maxNonAdjacentSum( List<Integer> nums, int start) {
+        if (start >= nums.size()) {
+            return 0;
+        }
+        return Math.max(maxNonAdjacentSum(nums,start +1), nums.get(start) + maxNonAdjacentSum(nums,start+2));
+    }
+
+    public static int maxNonAdjacentSum_memo(List<Integer > nums) {
+        return maxNonAdjacentSum_memo( nums, 0, new HashMap<>());
+    }
+    public static int maxNonAdjacentSum_memo( List<Integer> nums, int start, HashMap<Integer,Integer> memo) {
+        if (start >= nums.size()) {
+            return 0;
+        }
+
+        if (memo.containsKey(start)) {
+            return memo.get(start);
+        }
+
+        int result = Math.max(maxNonAdjacentSum_memo(nums,start +1,memo), nums.get(start) + maxNonAdjacentSum_memo(nums,start+2,memo));
+        memo.put(start,result);
+        return result;
+    }
 
     public static void main(String[] args) {
 //        fibonacci(10);
@@ -277,5 +302,7 @@ public class Main {
 //        grid.add(Arrays.asList(3, 6, 1));
 //        System.out.println(maxPathSum(grid));
 //        System.out.println(maxPathSum_memo(grid));
+
+        System.out.println(maxNonAdjacentSum(Arrays.asList(2,4,5,12,7)));
     }
 }
