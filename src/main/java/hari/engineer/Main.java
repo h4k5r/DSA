@@ -1,6 +1,9 @@
 package hari.engineer;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class Main {
     public static void fibonacci(int n) {
@@ -156,6 +159,54 @@ public class Main {
         return minCoins;
     }
 
+    public static int countPaths(List<List<Integer>> grid) {
+        return countPaths(0, 0, grid);
+    }
+
+    public static int countPaths(int r, int c, List<List<Integer>> grid) {
+        if (r >= grid.size() || c >= grid.get(r).size()) {
+            return 0;
+        }
+
+        if (grid.get(r).get(c) == 1) {
+            return 0;
+        }
+
+        if (r == grid.size() - 1 && c == grid.get(r).size() - 1) {
+            return 1;
+        }
+
+        return countPaths(r + 1, c, grid) + countPaths(r, c + 1, grid);
+    }
+
+    public static int countPaths_memo(List<List<Integer>> grid) {
+        return countPaths_memo(0, 0, grid, new HashMap<>());
+    }
+
+    public static int countPaths_memo(int r, int c, List<List<Integer>> grid, HashMap<List<Integer>, Integer> memo) {
+        if (r >= grid.size() || c >= grid.get(r).size()) {
+            return 0;
+        }
+
+        if (grid.get(r).get(c) == 1) {
+            return 0;
+        }
+
+        if (r == grid.size() - 1 && c == grid.get(r).size() - 1) {
+            return 1;
+        }
+
+        if (memo.containsKey(Arrays.asList(r,c))) {
+            return memo.get(Arrays.asList(r,c));
+        }
+
+        int result = countPaths_memo(r + 1, c, grid, memo) + countPaths_memo(r, c + 1, grid, memo);
+        memo.put(Arrays.asList(r, c), result);
+        return result;
+    }
+
+
+
 
     public static void main(String[] args) {
 //        fibonacci(10);
@@ -168,6 +219,13 @@ public class Main {
 //        System.out.println(sumPossibleMemo(5, new int[] {1,2,3}));
 
 //        System.out.println(minChange(4, new int[]{1,2,3}));
-        System.out.println(minChangeMemo(4, new int[]{1, 2, 3}));
+//        System.out.println(minChangeMemo(4, new int[]{1, 2, 3}));
+
+//        List<List<Integer>> grid = new ArrayList<>();
+//        grid.add(Arrays.asList(new Integer[]{0, 0, 1}));
+//        grid.add(Arrays.asList(new Integer[]{0, 0, 0}));
+//        grid.add(Arrays.asList(new Integer[]{0, 0, 0}));
+//        System.out.println(countPaths(grid));
+//        System.out.println(countPaths_memo(grid));
     }
 }
