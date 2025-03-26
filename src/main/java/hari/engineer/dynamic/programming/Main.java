@@ -58,6 +58,34 @@ public class Main {
         return result;
     }
 
+    public static int climbingStairs(int n) {
+        if (n==0) {
+            return 0;
+        }
+        if (n == 1 || n == 2) {
+            return n;
+        }
+        return Math.min(climbingStairs(n-1), climbingStairs(n-2));
+    }
+
+    public static int climbingStairs_memo(int n) {
+        return climbingStairs_memo(n, new HashMap<>());
+    }
+    public static int climbingStairs_memo(int n, HashMap<Integer, Integer> memo) {
+        if (n==0) {
+            return 0;
+        }
+        if (n == 1 || n == 2) {
+            return n;
+        }
+        if (memo.containsKey(n)) {
+            return memo.get(n);
+        }
+        int result = climbingStairs(n-1) + climbingStairs(n-2);
+        memo.put(n,result);
+        return result;
+    }
+
     public static boolean sumPossible(int amount, int[] numbers) {
         if (amount == 0) {
             return true;
@@ -315,6 +343,9 @@ public class Main {
 //        System.out.println(fibonacci_recursion(10));
 //        System.out.println(fibonacci_memo(10));
 
+//        System.out.println(climbingStairs(2));
+//        System.out.println(climbingStairs_memo(2));
+
 //        System.out.println(tribonacci(8));
 
 //        System.out.println(sumPossible(5, new int[] {1,2,3}));
@@ -340,6 +371,6 @@ public class Main {
 //        System.out.println(maxNonAdjacentSum(Arrays.asList(2,4,5,12,7)));
 
 //        compress(new char[]{'a','a','b','b','b','c','c','a','a'});
-        compress(new char[]{'a'});
+//        compress(new char[]{'a'});
     }
 }
