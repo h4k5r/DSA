@@ -1,15 +1,33 @@
 package hari.engineer.two.pointer;
 
-import java.util.Arrays;
+import java.util.HashSet;
 
 public class Main {
+    public static int containerWithMostWater(int[] containersHeight) {
+        int maxArea = 0;
+        int i = 0;
+        int j = containersHeight.length - 1;
+        while (i < j) {
+            if (containersHeight[i] < containersHeight[j]) {
+                int area = containersHeight[i] * (j - i);
+                maxArea = Math.max(maxArea, area);
+                i++;
+            } else {
+                int area = containersHeight[j] * (j - i);
+                maxArea = Math.max(maxArea, area);
+                j--;
+            }
+        }
+        return maxArea;
+    }
+
     public static int trapRainWater(int[] height) {
         int len = height.length;
 
         int[] left = new int[len];
         left[0] = height[0];
         for (int i = 1; i < len; i++) {
-            left[i] = Math.max( left[i - 1],height[i]);
+            left[i] = Math.max(left[i - 1], height[i]);
         }
 
         int[] right = new int[len];
@@ -26,53 +44,28 @@ public class Main {
         return water;
     }
 
-    public static double medianOfSortedArrays(int[] nums1, int[] nums2) {
-        int[] merged = merge(nums1,nums2);
-        int len = merged.length;
-        int median = 0;
-        System.out.println(len % 2 == 0);
-        if (len % 2 == 0) {
-            return (double) (merged[len / 2] + merged[(len / 2) - 1]) /2;
-        } else  {
-            return merged[(int) (double) (merged.length / 2)];
-        }
-    }
-
-    public static int[] merge(int[] first, int[] second) {
-        int[] resultArr = new int[(first.length + second.length)];
-        int firstLen = first.length;
-        int secondLen = second.length;
+    public static int lengthOfLongestSubstring(String s) {
         int i = 0;
         int j = 0;
+        int max = 0;
 
-        while(i < firstLen && j < secondLen) {
-            if (first[i] <= second[j]) {
-                resultArr[i+j] = first[i];
-                i++;
-            } else {
-                resultArr[i+j] = second[j];
+        HashSet<Character> characterHashSet = new HashSet<>();
+
+        while (j <s.length()) {
+            if (!characterHashSet.contains(s.charAt(j))) {
+                characterHashSet.add(s.charAt(j));
                 j++;
+                max = Math.max(characterHashSet.size(), max);
+            } else {
+                characterHashSet.remove(s.charAt(i));
+                i++;
             }
         }
-
-        while(i < firstLen) {
-            resultArr[i+j] = first[i];
-            i++;
-        }
-
-        while(j < secondLen) {
-            resultArr[i+j] = second[j];
-            j++;
-        }
-
-        return resultArr;
+        return max;
     }
 
     public static void main(String[] args) {
 //        System.out.println(trapRainWater(new int[]{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1}));
-//        System.out.println(medianOfSortedArrays());
-        int[] first = new int[]{1,2};
-        int[] second = new int[]{3,4};
-        System.out.println(medianOfSortedArrays(first, second));
+        System.out.println(containerWithMostWater(new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7}));
     }
 }
